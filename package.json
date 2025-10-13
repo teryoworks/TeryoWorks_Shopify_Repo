@@ -1,0 +1,23 @@
+{
+  "name": "teryoworks",
+  "version": "1.0.0",
+  "description": "[![Generic badge](https://img.shields.io/badge/course%20available%3F-yes-green.svg)](https://shields.io/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "tailwindcss": "^4.1.14"
+  },
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.10.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-liquid": "^0.0.1-security",
+    "prettier-plugin-tailwindcss": "^0.6.14"
+  }
+}
