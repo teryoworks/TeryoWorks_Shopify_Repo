@@ -1,5 +1,5 @@
 {
-  "name": "template article",
+  "name": "Template Article",
   "sections": {
     "template": {
       "type": "template-article",
@@ -10,20 +10,20 @@
         "author": {
           "type": "article_author"
         },
-        "pubnlished_date": {
+        "published_date": {
           "type": "article_published_date"
         },
         "thumbnail": {
           "type": "featured_image"
         },
         "content": {
-          "type": "article_conntent"
+          "type": "article_content"
         }
       },
       "block_order": [
         "title",
         "author",
-        "pubnlished_date",
+        "published_date",
         "thumbnail",
         "content"
       ]

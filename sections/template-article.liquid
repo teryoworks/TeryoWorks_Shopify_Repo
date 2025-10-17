@@ -1,18 +1,64 @@
-<h1>{{ article.title }}</h1>
+<article class="py-8">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'article_title' %}
+        <div class="flex items-center justify-center">
+          <div class="max-w-7xl text-center">
+            <a
+              href="{{ blog.url }}"
+              class="text-base font-bold text-gray-500 uppercase hover:text-gray-900"
+            >
+              {{ blog.title }}
+            </a>
+            <h1 class="text-4xl font-medium md:text-6xl">
+              {{ article.title }}
+            </h1>
+          </div>
+        </div>
+      {% when 'article_author' %}
+        <div class="flex items-center justify-center">
+          <div class="max-w-7xl text-center">
+            {% if section.settings.enable_author %}
+              <small>{{ article.author }}</small>
+            {% endif %}
+          </div>
+        </div>
+      {% when 'article_published_date' %}
+        <div class="flex items-center justify-center">
+          <div>
+            {% if section.settings.enable_published_date %}
+              <time datetime="{{article.published_at | date: '%Y-%m-%d'}}">
+                {{ article.published_at | date: format: 'on_date' }}
+              </time>
+            {% endif %}
+          </div>
+        </div>
+      {% when 'featured_image' %}
+        <div class="mx-2 my-4 max-w-7xl overflow-hidden rounded-lg bg-blue-100 md:mx-auto">
+          {% if article.image != blank %}
+            <img
+              class="h-80 w-full object-cover object-center md:h-96"
+              src="{{article.image | img_url: 'medium'}}"
+              alt="{{ article.image.alt }}"
+            >
+          {% else %}
+            {% assign placeholder_image = 'lifestyle-1' %}
+            {{
+              placeholder_image
+              | placeholder_svg_tag: 'w-full h-80 md:h-96 object-cover object-center p-5'
+            }}
+          {% endif %}
+        </div>
+      {% when 'article_content' %}
+        <div class="flex items-center justify-center">
+          <div class="max-w-4xl">{{ article.content }}</div>
+        </div>
+    {% endcase %}
+  {% endfor %}
+</article>
 
-{% if section.settings.enable_author %}
-  <h1>{{ article.author }}</h1>
+{% if blog.comments_enabled? %}
 {% endif %}
-
-{% if section.settings.enable_published_date %}
-  <time datetime="{{article.published_at | date: '%Y-%m-%d'}}">
-    {{ article.published_at | date: '%B %d, %Y' }}
-  </time>
-{% endif %}
-
-<img src="{{article.image | img_url: 'medium'}}" alt="{{ article.image.alt }}">
-
-<div class="">{{ article.content }}</div>
 
 {% schema %}
 {
@@ -21,40 +67,40 @@
     {
       "type": "checkbox",
       "id": "enable_author",
-      "default": true,
-      "label": "Display Author Name"
+      "label": "Display Author Name",
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "enable_published_date",
-      "default": true,
-      "label": "Display Published Date"
+      "label": "Display Published Date",
+      "default": true
     }
   ],
   "blocks": [
     {
       "type": "article_title",
-      "name": "Title",
+      "name": "title",
       "limit": 1
     },
     {
       "type": "article_author",
-      "name": "Author",
+      "name": "author",
       "limit": 1
     },
     {
       "type": "article_published_date",
-      "name": "Published Date",
+      "name": "published_date",
       "limit": 1
     },
     {
       "type": "featured_image",
-      "name": "Thumbnmail",
+      "name": "thumbnail",
       "limit": 1
     },
     {
       "type": "article_content",
-      "name": "Content",
+      "name": "content",
       "limit": 1
     }
   ]
