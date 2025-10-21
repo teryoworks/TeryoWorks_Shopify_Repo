@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "template": {
+      "type": "template-blog",
+      "blocks": {
+        "title": {
+          "type": "article_title"
+        },
+        "thumbnail": {
+          "type": "featured_image"
+        },
+        "content": {
+          "type": "article_content"
+        }
+      },
+      "block_order": ["title", "thumbnail", "content"]
+    }
+  },
+  "order": ["template"]
+}

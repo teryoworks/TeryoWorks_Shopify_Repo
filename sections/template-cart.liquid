@@ -1,0 +1,117 @@
+{% if cart.item_count > 0 %}
+  <div class="p-4">
+    <div class="mx-auto my-10 flex max-w-6xl flex-col">
+      <div class="my-5 flex items-end justify-between">
+        <h1 class="text-3xl">Your cart</h1>
+        <a
+          href="{{ routes.all_products_collection_url }}"
+          class="font-medium text-blue-600 underline hover:text-blue-800"
+          >Continue Shopping</a
+        >
+      </div>
+    </div>
+
+    <div class="mx-auto my-10 flex max-w-6xl flex-col">
+      <form action="{{ routes.cart_url }}" method="POST" novalidate>
+        <table class="my-4 w-full table-auto divide-y divide-gray-200">
+          <thead>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+              Product
+            </th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+              Quantity
+            </th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+              Total Price
+            </th>
+          </thead>
+          <tbody>
+            {% for item in cart.items %}
+              <tr class="table-row border">
+                <td class="flex flex-col justify-center px-2 py-4">
+                  <a href="{{ item.url }}">
+                    {% if item.image %}
+                      <img
+                        src="{{ item.image | img_url: 'small'  }}"
+                        alt="{{ item.title |  escape }}"
+                        class="h-20 w-20 border object-cover"
+                      >
+                    {% else %}
+                      {{
+                        'product-1'
+                        | placeholder_svg_tag: 'w-20 h-20 object-cover border'
+                      }}
+                    {% endif %}
+                  </a>
+                </td>
+                <td class="flex flex-col justify-center px-2 py-4">
+                  <a href="{{ item.url }}" class="my-1">
+                    {{ item.product.title | truncatewords: 5 }}
+                  </a>
+                  <span class="my-1 text-sm text-gray-500">
+                    {{ item.variant.title }}
+                  </span>
+                  <a
+                    href="{{ routes.cart_change_url}}?line={{ forloop.index }}&quantity=0"
+                    class="my-1 text-sm font-medium text-red-500"
+                    >remove</a
+                  >
+                </td>
+                <td class="px-2 py-4">
+                  <input
+                    type="number"
+                    name="updates[]"
+                    value=" {{ item.quantity }} "
+                    class="w-20 border p-2"
+                    min="1"
+                    id="updates_{{ forloop.index }}"
+                  >
+                </td>
+                <td class="px-2 py-4">
+                  {{ item.line_price | money }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="flex flex-col items-center justify-between md:flex-row">
+          <div class="my-4 w-full"></div>
+          <div class="my-4 w-full md:w-80">
+            <h3 class="text-xl">Subtotal: {{ cart.total_price | money }}</h3>
+            <div class="my-2">
+              <button
+                name="update"
+                type="sumbit"
+                class="w-full border border-gray-600 p-3 font-medium text-gray-600 hover:bg-gray-600 hover:text-white"
+              >
+                Update
+              </button>
+            </div>
+            <div class="my-2"></div>
+            <button
+              name="checkout"
+              type="sumbit"
+              class="w-full border border-gray-600 bg-gray-600 p-3 font-medium text-white"
+            >
+              Checkout
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <div class="mx-auto my-4 block flex h-60 max-w-6xl items-center justify-center">
+    <div class="text-center">
+      <h1 class="my-4 text-3xl">Your Cart is empty</h1>
+      <div class="my-4 py-4">
+        <a
+          href="{{ routes.all_products_collection_url }}"
+          class="rounded-sm border border-gray-600 bg-gray-600 px-8 py-3 text-white hover:bg-gray-900"
+          >Continue Shopping</a
+        >
+      </div>
+    </div>
+  </div>
+{% endif %}

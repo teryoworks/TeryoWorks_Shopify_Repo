@@ -1,0 +1,103 @@
+<div class="py-8">
+  {% paginate blog.articles by section.settings.number_of_blog_posts %}
+    <h1 class="text-center text-3xl">{{ blog.title }}</h1>
+    <div class="mx-auto max-w-6xl">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {% for article in blog.articles %}
+          <div class="w-full px-3 py-6">
+            <div class="overflow-hidden rounded-lg bg-white shadow-xl">
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'featured_image' %}
+                    {% if article.image %}
+                      <a href="{{ article.url }}"
+                        ><img
+                          class="h-80 w-full object-cover"
+                          src="{{ article.image | img_url: 'medium' }}"
+                          alt="{{ article.image.alt }}"
+                      ></a>
+                    {% else %}
+                      <a href="{{ article.url }}">
+                        {{
+                          'image'
+                          | placeholder_svg_tag: 'w-full h-80 object-cover bg-gray-100'
+                        }}
+                      </a>
+                    {% endif %}
+                    <div class="p-4">
+                  {% when 'article_title' %}
+                    <h1 class="font-m my-4 text-xl">{{ article.title }}</h1>
+                  {% when 'article_content' %}
+                    {% if article.excerpt.size > 0 %}
+                      <p>
+                        {{ article.content | strip_html | truncatewords: 15 }}
+                      </p>
+                    {% else %}
+                      {% if article.excerpt.size > 0 %}
+                      {% else %}
+                        <p>
+                          {{ article.content | strip_html | truncatewords: 15 }}
+                        </p>
+                      {% endif %}
+                    {% endif %}
+
+                    <a
+                      href="{{ article.url }}"
+                      class="my-4 block font-medium text-blue-400 hover:text-blue-800"
+                    >
+                      {{ section.settings.blog_read_more }}
+                    </a>
+                    </div>
+                {% endcase %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-6xl">
+      {% render 'pagination', pagination: paginate %}
+    </div>
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "blog_read_more",
+      "label": "Read more label",
+      "default": "Read more"
+    },
+    {
+      "type": "range",
+      "id": "number_of_blog_posts",
+      "step": 1,
+      "min": 1,
+      "max": 6,
+      "label": "Blog posts per page",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured_image",
+      "name": "Image",
+      "limit": 1
+    },
+    {
+      "type": "article_title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "article_content",
+      "name": "Content",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}
