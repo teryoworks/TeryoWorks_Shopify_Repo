@@ -1,6 +1,20 @@
-{% for product in section.settings.featured_collection.products %}
-  {% render "product-card" : product_product: product %}
-{% endfor %}
+<div class="my-8 flex flex-col items-center">
+  <h1 class="text-center text-3xl">{{ section.settings.title }}</h1>
+  <div class="mx-auto max-w-6xl">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+      {% for product in section.settings.featured_collection.products
+        limit: section.settings.number_of_products_to_show
+      %}
+        {% render "product-card" : product_product: product %}
+
+      {% else %}
+        {% for item in (1..section.settings.number_of_products_to_show) %}
+          {% render 'product-card-placeholder' %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
 {% schema %}
 {
@@ -16,6 +30,19 @@
       "type": "collection",
       "id": "featured_collection",
       "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "number_of_products_to_show",
+      "default": 4,
+      "min": 4,
+      "max": 12,
+      "label": "Number of products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
     }
   ]
 }
