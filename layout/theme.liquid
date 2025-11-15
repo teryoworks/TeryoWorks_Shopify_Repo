@@ -25,7 +25,10 @@
     <script defer src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    {% section 'header' %}
+    <!-- Header goes here -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+      {% section 'header' %}
+    </header>
     <main role="main">
       {{ content_for_layout }}
     </main>

@@ -6,8 +6,9 @@
         <a
           href="{{ routes.all_products_collection_url }}"
           class="font-medium text-blue-600 underline hover:text-blue-800"
-          >Continue Shopping</a
         >
+          Continue Shopping
+        </a>
       </div>
     </div>
 
@@ -54,14 +55,15 @@
                   <a
                     href="{{ routes.cart_change_url}}?line={{ forloop.index }}&quantity=0"
                     class="my-1 text-sm font-medium text-red-500"
-                    >remove</a
                   >
+                    remove
+                  </a>
                 </td>
                 <td class="px-2 py-4">
                   <input
                     type="number"
                     name="updates[]"
-                    value=" {{ item.quantity }} "
+                    value=" {{item.quantity}} "
                     class="w-20 border p-2"
                     min="1"
                     id="updates_{{ forloop.index }}"
@@ -128,8 +130,9 @@
         <a
           href="{{ routes.all_products_collection_url }}"
           class="rounded-sm border border-gray-600 bg-gray-600 px-8 py-3 text-white hover:bg-gray-900"
-          >Continue Shopping</a
         >
+          Continue Shopping
+        </a>
       </div>
     </div>
   </div>

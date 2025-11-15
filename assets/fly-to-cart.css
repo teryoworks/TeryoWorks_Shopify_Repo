@@ -1,0 +1,26 @@
+.fly-image {
+  pointer-events: none;
+  border-radius: 8px;
+  position: fixed;
+  transition: all 0.8s ease-in-out;
+  z-index: 9999;
+}
+
+#cart-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease-in-out;
+  z-index: 9999;
+}
+
+#cart-popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}

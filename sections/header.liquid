@@ -1,4 +1,7 @@
-<div class="relative bg-white" x-data="{ mobileMenuOpen: false }">
+<div
+  class="relative bg-white"
+  x-data="{ mobileMenuOpen: false, searchBarOpen: false,  }"
+>
   <div class="mx-auto px-4 sm:px-6">
     <div class="flex items-center justify-center py-6 md:justify-start md:space-x-10">
       <!-- STORE NAME / STORE LOGO -->
@@ -14,6 +17,24 @@
         >
           {% render 'icon-menu' %}
         </button>
+
+        {% assign unique_item_count = cart.items | size %}
+        <!-- Mobile Cart Button -->
+        <a
+          href="{{ routes.cart_url }}"
+          class="cart-button-mobile text-base whitespace-nowrap text-gray-500 hover:text-gray-900"
+        >
+          <span class="relative inline-block">
+            {% render 'icon-shopping-bag' %}
+            <span
+              class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white {% if unique_item_count > 0 %} bg-gray-600 {% else %} bg-transparent {% endif %}"
+            >
+              {% if unique_item_count > 0 %}
+                {{ unique_item_count }}
+              {% endif %}
+            </span>
+          </span>
+        </a>
       </div>
       <!-- NAVIGATION MENU -->
       <nav class="hidden space-x-10 md:flex">
@@ -76,11 +97,31 @@
       </nav>
       <!-- CART BUTTON / ACCOUNT LINKS IF ENABLED -->
       <div class="hidden items-center justify-end space-x-5 md:flex md:flex-1">
-        <a
-          href="{{ routes.cart_url }}"
+        <button
+          x-on:click="searchBarOpen = true"
+          type="button"
           class="text-base whitespace-nowrap text-gray-500 hover:text-gray-900"
         >
-          {% render 'icon-shopping-bag' %}
+          {% render 'icon-search' %}
+        </button>
+
+        {% assign unique_item_count = cart.items | size %}
+        <!-- Desktop Cart Button -->
+        <a
+          href="{{ routes.cart_url }}"
+          class="cart-button-desktop text-base whitespace-nowrap text-gray-500 hover:text-gray-900"
+        >
+          <span class="relative inline-block">
+            {% render 'icon-shopping-bag' %}
+            <span
+              data-cart-count
+              class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs font-semibold text-white {% if unique_item_count > 0 %} bg-gray-600 {% else %} bg-transparent {% endif %}"
+            >
+              {% if unique_item_count > 0 %}
+                {{ unique_item_count }}
+              {% endif %}
+            </span>
+          </span>
         </a>
 
         {% if shop.customer_accounts_enabled %}
@@ -88,8 +129,9 @@
             <a
               href="{{ routes.account_url }}"
               class="text-base text-gray-500 hover:text-gray-900"
-              >account</a
             >
+              account
+            </a>
             {{
               'Log out'
               | customer_logout_link
@@ -195,6 +237,37 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div
+    x-show="searchBarOpen"
+    class="absolute top-0 w-full border bg-white"
+  >
+    <div
+      type="button"
+      x-on:click="searchBarOpen=false"
+      class="absolute top-0 right-0 mt-5 mr-5 text-gray-500"
+    >
+      {% render 'icon-close' %}
+    </div>
+    <div class="flex h-40 items-center justify-center">
+      <form action="{{ routes.search_url }}" method="get" class="flex-auto">
+        <div class="relative px-10 text-gray-500">
+          <input
+            type="search"
+            name="q"
+            placeholder="Search"
+            class="h-10 w-full rounded-full border bg-white px-5 pr-10 text-sm focus:outline-none"
+          >
+          <button
+            type="submit"
+            class="absolute top-0 right-0 mt-2 mr-2 md:mr-20"
+          >
+            {% render 'icon-search' %}
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
